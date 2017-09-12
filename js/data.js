@@ -1,6 +1,15 @@
 'use strict';
 
 (function () {
+  var mapLeftTopCorner = {
+    x: 300,
+    y: 100
+  };
+  var mapRightBottomCorner = {
+    x: 900,
+    y: 500
+  };
+
   var util = window.util;
 
   function generateSimilarAd(params) {
@@ -11,8 +20,8 @@
       avatar: 'img/avatars/user' + authorID + '.png'
     };
     SimilarAd.location = {
-      x: util.getRandomNumber(300, 900),
-      y: util.getRandomNumber(100, 500)
+      x: util.getRandomNumber(mapLeftTopCorner.x, mapRightBottomCorner.x),
+      y: util.getRandomNumber(mapLeftTopCorner.y, mapRightBottomCorner.y)
     };
     SimilarAd.offer = {
       title: util.ejectRandomElement(params.titles),
@@ -32,6 +41,8 @@
 
 
   window.data = {
+    mapLeftTopCorner: mapLeftTopCorner,
+    mapRightBottomCorner: mapRightBottomCorner,
     createSimilarAds: function (arrayLength) {
       var ads = [];
       var adParams = {
