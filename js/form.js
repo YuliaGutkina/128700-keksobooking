@@ -11,6 +11,8 @@
   var adRoomNumber = noticeForm.querySelector('#room_number');
   var adAddressInput = noticeForm.querySelector('#address');
 
+  var util = window.util;
+
   adCapacity.addEventListener('input', function () {
     switch (adCapacity.value) {
       case ('0') :
@@ -44,11 +46,11 @@
   });
 
   adTimeIn.addEventListener('input', function () {
-    window.util.syncValues(adTimeIn, adTimeOut);
+    util.syncValues(adTimeIn, adTimeOut);
   });
 
   adTimeOut.addEventListener('input', function () {
-    window.util.syncValues(adTimeOut, adTimeIn);
+    util.syncValues(adTimeOut, adTimeIn);
   });
 
   adPriceInput.addEventListener('input', function () {

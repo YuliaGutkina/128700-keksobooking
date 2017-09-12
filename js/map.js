@@ -1,70 +1,39 @@
 'use strict';
 
 (function () {
+  var mapWrapper = document.querySelector('.tokyo');
   var pinMap = document.querySelector('.tokyo__pin-map');
-  var dialogClose = document.querySelector('.dialog__close');
-  var offerDialog = document.querySelector('#offer-dialog');
+  var count = 8;
 
-  showPins(pinMap);
+  var pin = window.pin;
+  var dialog = window.dialog;
+  var util = window.util;
 
-  function onDialogEscPress(evt) {
-    window.util.isEscEvent(evt, closeDialog);
-  }
+  pin.showPins(pinMap, count);
 
-  pinMap.addEventListener('click', function (evt) {
-    var target = evt.target;
+  mapWrapper.addEventListener('click', function (evt) {
+    launchMapAction(evt.target);
+  });
 
-    while (target !== pinMap) {
+  mapWrapper.addEventListener('keydown', function (evt) {
+    util.isEnterEvent(evt, function () {
+      launchMapAction(evt.target);
+    });
+  });
+
+  function launchMapAction(target) {
+    while (target !== mapWrapper) {
       if (target.classList.contains('pin')) {
-        window.pin.activatePin(pinMap, target);
-        openDialog();
+        pin.activatePin(pinMap, target);
+        dialog.openDialog();
+        return;
+      }
+      if (target.classList.contains('dialog__close')) {
+        pin.checkActivePins(pinMap);
+        dialog.closeDialog();
         return;
       }
       target = target.parentNode;
     }
-  });
-
-  pinMap.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, function () {
-      var target = evt.target;
-
-      while (target !== pinMap) {
-        if (target === document.activeElement) {
-          target = target.parentNode;
-          window.pin.activatePin(pinMap, target);
-          openDialog();
-          return;
-        }
-      }
-    });
-  });
-
-  dialogClose.addEventListener('click', function () {
-    closeDialog();
-  });
-
-  dialogClose.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, closeDialog);
-  });
-
-  function openDialog() {
-    offerDialog.classList.remove('hidden');
-    document.addEventListener('keydown', onDialogEscPress);
-  }
-
-  function closeDialog() {
-    window.pin.checkActivePins(pinMap);
-    offerDialog.classList.add('hidden');
-    document.removeEventListener('keydown', onDialogEscPress);
-  }
-
-  function showPins(block) {
-    var fragment = document.createDocumentFragment();
-
-    for (var j = 0; j < 8; j++) {
-      fragment.appendChild(window.pin.generatePin(window.pin.SimilarAds[j], j));
-    }
-
-    block.appendChild(fragment);
   }
 })();
