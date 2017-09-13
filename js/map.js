@@ -4,6 +4,9 @@
   var mapWrapper = document.querySelector('.tokyo');
   var pinMap = document.querySelector('.tokyo__pin-map');
   var count = 8;
+  var pinHandle = pinMap.querySelector('.pin__main');
+
+  var adAddressInput = document.querySelector('#address');
 
   var pin = window.pin;
   var dialog = window.dialog;
@@ -36,4 +39,64 @@
       target = target.parentNode;
     }
   }
+
+  pinHandle.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var realCoords = {};
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.pageX,
+        y: startCoords.y - moveEvt.pageY
+      };
+
+      if (checkPinLocation(pinHandle.offsetLeft - shift.x, pinHandle.offsetTop - shift.y)) {
+        shift.x = 0;
+        shift.y = 0;
+      }
+
+      setPinLocation(pinHandle.offsetLeft - shift.x, pinHandle.offsetTop - shift.y);
+      showAddress(adAddressInput, realCoords.x, realCoords.y);
+
+      startCoords = {
+        x: moveEvt.pageX,
+        y: moveEvt.pageY
+      };
+    };
+
+    function checkPinLocation(x, y) {
+      return ((x < 0) || (x > mapWrapper.clientWidth - pinHandle.clientWidth) || (y < 0) || (y > mapWrapper.clientHeight - pinHandle.clientHeight));
+    }
+
+    function setPinLocation(x, y) {
+      pinHandle.style.left = x + 'px';
+      pinHandle.style.top = y + 'px';
+
+      realCoords.x = x + pinHandle.clientWidth / 2;
+      realCoords.y = y + pinHandle.clientHeight;
+    }
+
+    function showAddress(input, addressX, addressY) {
+      input.readOnly = true;
+      input.value = 'x: ' + addressX + ', ' + 'y: ' + addressY;
+    }
+
+    function onMouseUp(upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 })();
