@@ -11,76 +11,94 @@
   var adRoomNumber = noticeForm.querySelector('#room_number');
   var adAddressInput = noticeForm.querySelector('#address');
 
-  var util = window.util;
-
   adCapacity.addEventListener('input', function () {
-    switch (adCapacity.value) {
-      case ('0') :
-        adRoomNumber.value = '100';
-        break;
-      case ('1') :
-        adRoomNumber.value = '1';
-        break;
-      case ('2') :
-        adRoomNumber.value = '2';
-        break;
-      case ('3') :
-        adRoomNumber.value = '3';
-        break;
-    }
+    window.synchronizeFields(adCapacity, adRoomNumber, setRoomNumber);
   });
 
   adRoomNumber.addEventListener('input', function () {
-    if (adRoomNumber.value === '100') {
-      adCapacity.value = '0';
-    }
-    if (adRoomNumber.value === '1') {
-      adCapacity.value = '1';
-    }
-    if ((adRoomNumber.value === '2') && (+adCapacity.value > +adRoomNumber.value)) {
-      adCapacity.value = '2';
-    }
-    if ((adRoomNumber.value === '3') && (+adCapacity.value > +adRoomNumber.value)) {
-      adCapacity.value = '3';
-    }
+    window.synchronizeFields(adRoomNumber, adCapacity, setCapacity);
   });
 
   adTimeIn.addEventListener('input', function () {
-    util.syncValues(adTimeIn, adTimeOut);
+    window.synchronizeFields(adTimeIn, adTimeOut, syncValues);
   });
 
   adTimeOut.addEventListener('input', function () {
-    util.syncValues(adTimeOut, adTimeIn);
+    window.synchronizeFields(adTimeOut, adTimeIn, syncValues);
   });
 
   adPriceInput.addEventListener('input', function () {
-    if (adPriceInput.value >= 10000) {
-      adType.value = 'palace';
-    } else if (adPriceInput.value >= 5000) {
-      adType.value = 'house';
-    } else if (adPriceInput.value >= 1000) {
-      adType.value = 'flat';
-    } else if (adPriceInput.value >= 0) {
-      adType.value = 'bungalo';
-    }
+    window.synchronizeFields(adPriceInput, adType, setHouse);
   });
 
   adType.addEventListener('input', function () {
-    switch (adType.value) {
-      case 'bungalo':
-        adPriceInput.value = 0;
+    window.synchronizeFields(adType, adPriceInput, setPrice);
+  });
+
+  function setRoomNumber(field1, field2) {
+    switch (field1.value) {
+      case ('0') :
+        field2.value = '100';
         break;
-      case 'flat':
-        adPriceInput.value = 1000;
+      case ('1') :
+        field2.value = '1';
         break;
-      case 'house':
-        adPriceInput.value = 5000;
+      case ('2') :
+        field2.value = '2';
         break;
-      case 'palace':
-        adPriceInput.value = 10000;
+      case ('3') :
+        field2.value = '3';
         break;
     }
-  });
+  }
+
+  function setCapacity(field1, field2) {
+    if (field1.value === '100') {
+      field2.value = '0';
+    }
+    if (field1.value === '1') {
+      field2.value = '1';
+    }
+    if ((field1.value === '2') && (+field2.value > +field1.value)) {
+      field2.value = '2';
+    }
+    if ((field1.value === '3') && (+field2.value > +field1.value)) {
+      field2.value = '3';
+    }
+  }
+
+  function syncValues(field1, field2) {
+    field2.value = field1.value;
+  }
+
+  function setHouse(field1, field2) {
+    if (field1.value >= 10000) {
+      field2.value = 'palace';
+    } else if (field1.value >= 5000) {
+      field2.value = 'house';
+    } else if (field1.value >= 1000) {
+      field2.value = 'flat';
+    } else if (field1.value >= 0) {
+      field2.value = 'bungalo';
+    }
+  }
+
+  function setPrice(field1, field2) {
+    switch (field1.value) {
+      case 'bungalo':
+        field2.value = 0;
+        break;
+      case 'flat':
+        field2.value = 1000;
+        break;
+      case 'house':
+        field2.value = 5000;
+        break;
+      case 'palace':
+        field2.value = 10000;
+        break;
+    }
+  }
 
   adAddressInput.addEventListener('invalid', function () {
     if (!adAddressInput.validity.valid) {

@@ -40,9 +40,6 @@
         newArrayElements.push(window.util.ejectRandomElement(copyElements));
       }
       return newArrayElements;
-    },
-    syncValues: function (field1, field2) {
-      field2.value = field1.value;
     }
   };
 })();
