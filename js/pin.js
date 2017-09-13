@@ -5,7 +5,7 @@
   var pinHeight = 75;
 
   var util = window.util;
-  var card = window.card;
+  var showCard = window.showCard;
   var data = window.data;
 
   window.pin = {
@@ -29,13 +29,13 @@
       pin.innerHTML = '<img src=\"' + ad.author.avatar + '\" class="rounded" width="40" height="40" tabindex="0">';
 
       pin.addEventListener('click', function () {
-        card.fillLodge(ad);
+        showCard(ad);
       });
 
       pin.addEventListener('keydown', function (evt) {
         util.isEnterEvent(evt, function () {
           if (evt.target === document.activeElement) {
-            card.fillLodge(ad);
+            showCard(ad);
           }
         });
       });
