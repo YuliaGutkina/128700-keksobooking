@@ -11,7 +11,6 @@
   var pin = window.pin;
   var dialog = window.dialog;
   var util = window.util;
-  var data = window.data;
 
   pin.showPins(pinMap, count);
 
@@ -55,31 +54,34 @@
       moveEvt.preventDefault();
 
       var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+        x: startCoords.x - moveEvt.pageX,
+        y: startCoords.y - moveEvt.pageY
       };
 
-      if (checkPinLocation(moveEvt.clientX, moveEvt.clientY, data.mapLeftTopCorner, data.mapRightBottomCorner)) {
+      if (checkPinLocation(pinHandle.offsetLeft - shift.x, pinHandle.offsetTop - shift.y)) {
         shift.x = 0;
         shift.y = 0;
       }
 
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
-      pinHandle.style.top = (pinHandle.offsetTop - shift.y) + 'px';
-      pinHandle.style.left = (pinHandle.offsetLeft - shift.x) + 'px';
-
-      realCoords.x = ((pinHandle.offsetLeft - shift.x) + pinHandle.clientWidth / 2);
-      realCoords.y = (pinHandle.offsetTop - shift.y) + pinHandle.clientHeight;
-
+      setPinLocation(pinHandle.offsetLeft - shift.x, pinHandle.offsetTop - shift.y);
       showAddress(adAddressInput, realCoords.x, realCoords.y);
+
+      startCoords = {
+        x: moveEvt.pageX,
+        y: moveEvt.pageY
+      };
     };
 
-    function checkPinLocation(x, y, leftTopCorner, rightBottomCorner) {
-      return ((x < leftTopCorner.x) || (x > rightBottomCorner.x) || (y < leftTopCorner.y) || (y > rightBottomCorner.y));
+    function checkPinLocation(x, y) {
+      return ((x < 0) || (x > mapWrapper.clientWidth - pinHandle.clientWidth) || (y < 0) || (y > mapWrapper.clientHeight - pinHandle.clientHeight));
+    }
+
+    function setPinLocation(x, y) {
+      pinHandle.style.left = x + 'px';
+      pinHandle.style.top = y + 'px';
+
+      realCoords.x = x + pinHandle.clientWidth / 2;
+      realCoords.y = y + pinHandle.clientHeight;
     }
 
     function showAddress(input, addressX, addressY) {
