@@ -11,6 +11,13 @@
   var adRoomNumber = noticeForm.querySelector('#room_number');
   var adAddressInput = noticeForm.querySelector('#address');
 
+  noticeForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(noticeForm), function () {
+      // userDialog.classList.add('hidden');
+    });
+    evt.preventDefault();
+  });
+
   adCapacity.addEventListener('input', function () {
     window.synchronizeFields(adCapacity, adRoomNumber, setRoomNumber);
   });

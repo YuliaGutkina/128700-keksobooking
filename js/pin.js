@@ -6,7 +6,6 @@
 
   var util = window.util;
   var showCard = window.showCard;
-  var data = window.data;
 
   window.pin = {
     checkActivePins: function (map) {
@@ -42,11 +41,10 @@
 
       return pin;
     },
-    showPins: function (block, count) {
+    showPins: function (block, ads) {
       var fragment = document.createDocumentFragment();
-      var ads = data.createSimilarAds(count);
 
-      for (var j = 0; j < count; j++) {
+      for (var j = 0; j < ads.length; j++) {
         fragment.appendChild(window.pin.generatePin(ads[j]));
       }
 

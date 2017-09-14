@@ -30,7 +30,6 @@
     return SimilarAd;
   }
 
-
   window.data = {
     createSimilarAds: function (arrayLength) {
       var ads = [];

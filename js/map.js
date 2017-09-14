@@ -3,16 +3,34 @@
 (function () {
   var mapWrapper = document.querySelector('.tokyo');
   var pinMap = document.querySelector('.tokyo__pin-map');
-  var count = 8;
   var pinHandle = pinMap.querySelector('.pin__main');
+  var errors = [];
 
   var adAddressInput = document.querySelector('#address');
+
+  var onLoad = function (data) {
+    pin.showPins(pinMap, data);
+  };
+
+  var onError = function (message) {
+    showErrorMsg(message);
+  };
+
+  window.backend.load(onLoad, onError);
 
   var pin = window.pin;
   var dialog = window.dialog;
   var util = window.util;
 
-  pin.showPins(pinMap, count);
+  function showErrorMsg(message) {
+    var block = document.createElement('div');
+    block.style = 'position: fixed; top: 50px; right: 50px; padding: 20px; background-color: white; border-radius: 2px; transform: ease-out 1s;z-index: 10';
+    errors.push(message);
+    for (var i = 0; i < errors.length; i++) {
+      block.innerHTML = '<p>' + errors[i] + '</p>';
+    }
+    mapWrapper.appendChild(block);
+  }
 
   mapWrapper.addEventListener('click', function (evt) {
     launchMapAction(evt.target);
