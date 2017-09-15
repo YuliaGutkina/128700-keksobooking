@@ -3,7 +3,6 @@
 (function () {
   var mapWrapper = document.querySelector('.tokyo');
   var pinMap = document.querySelector('.tokyo__pin-map');
-  var count = 8;
   var pinHandle = pinMap.querySelector('.pin__main');
 
   var adAddressInput = document.querySelector('#address');
@@ -11,8 +10,17 @@
   var pin = window.pin;
   var dialog = window.dialog;
   var util = window.util;
+  var backend = window.backend;
 
-  pin.showPins(pinMap, count);
+  backend.load(onLoad, onError);
+
+  function onLoad(data) {
+    pin.showPins(pinMap, data);
+  }
+
+  function onError(message) {
+    window.backend.showErrorMsg(message);
+  }
 
   mapWrapper.addEventListener('click', function (evt) {
     launchMapAction(evt.target);
