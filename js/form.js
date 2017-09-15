@@ -19,6 +19,7 @@
     evt.preventDefault();
 
     function onLoad() {
+      noticeForm.reset();
       window.backend.showErrorMsg('данные отправлены');
     }
 
