@@ -7,6 +7,17 @@
   var util = window.util;
   var showCard = window.showCard;
 
+  var getPinImg = function (src) {
+    var img = document.createElement('img');
+    img.src = src;
+    img.className = 'rounded';
+    img.setAttribute('width', 40);
+    img.setAttribute('height', 40);
+    img.setAttribute('tabindex', 0);
+
+    return img;
+  };
+
   window.pin = {
     checkActivePins: function (map) {
       var pins = map.querySelectorAll('.pin');
@@ -25,7 +36,7 @@
 
       pin.className = 'pin';
       pin.style = 'left: ' + pinX + 'px; ' + 'top: ' + pinY + 'px;';
-      pin.innerHTML = '<img src=\"' + ad.author.avatar + '\" class="rounded" width="40" height="40" tabindex="0">';
+      pin.appendChild(getPinImg(ad.author.avatar));
 
       pin.addEventListener('click', function () {
         showCard(ad);
@@ -39,6 +50,12 @@
         });
       });
 
+      pin.dataset.housingType = ad.offer.type;
+      pin.dataset.housingPrice = ad.offer.price;
+      pin.dataset.housingRooms = ad.offer.rooms;
+      pin.dataset.housingGuests = ad.offer.guests;
+      pin.dataset.housingFeatures = ad.offer.features.join(' ');
+
       return pin;
     },
     showPins: function (block, ads) {
@@ -49,6 +66,6 @@
       }
 
       block.appendChild(fragment);
-    }
+    },
   };
 })();
