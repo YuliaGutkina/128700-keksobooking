@@ -4,6 +4,7 @@
   var mapWrapper = document.querySelector('.tokyo');
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pinHandle = pinMap.querySelector('.pin__main');
+  var ads = [];
 
   var adAddressInput = document.querySelector('#address');
 
@@ -15,7 +16,8 @@
   backend.load(onLoad, onError);
 
   function onLoad(data) {
-    pin.showPins(pinMap, data);
+    ads = data;
+    pin.showPins(pinMap, ads);
   }
 
   function onError(message) {
