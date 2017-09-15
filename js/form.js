@@ -11,12 +11,22 @@
   var adRoomNumber = noticeForm.querySelector('#room_number');
   var adAddressInput = noticeForm.querySelector('#address');
 
+  var backend = window.backend;
+
   noticeForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(noticeForm), function () {
-      // userDialog.classList.add('hidden');
-    });
+    checkFormValidity(noticeForm);
+    backend.save(new FormData(noticeForm), onLoad, onError);
     evt.preventDefault();
+
+    function onLoad() {
+      window.backend.showErrorMsg('данные отправлены');
+    }
+
+    function onError(message) {
+      window.backend.showErrorMsg(message);
+    }
   });
+
 
   adCapacity.addEventListener('input', function () {
     window.synchronizeFields(adCapacity, adRoomNumber, setRoomNumber);
@@ -170,10 +180,6 @@
     } else {
       target.setCustomValidity('');
     }
-  });
-
-  noticeForm.addEventListener('submit', function () {
-    checkFormValidity(noticeForm);
   });
 
   noticeForm.querySelector('.form__submit').addEventListener('click', function () {
