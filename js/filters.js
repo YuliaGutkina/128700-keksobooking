@@ -55,7 +55,6 @@
 
   function filterElements(elemClass) {
     var filterElems = document.querySelectorAll(elemClass);
-    console.log(filterItems);
     var filters = getFilters();
 
     for (var i = 0; i < filterElems.length; i++) {
