@@ -9,7 +9,7 @@
   var housingFeatures = formFilters.querySelector('#housing_features');
 
   formFilters.addEventListener('change', function () {
-    filterElements('.pin');
+    window.filterElements('.pin');
   });
 
   function getFilters() {
