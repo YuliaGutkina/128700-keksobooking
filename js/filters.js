@@ -33,37 +33,40 @@
   }
 
   function filterItem(item, filters) {
-    if (item.dataset.housingType !== filters.housingType) {
-      return false;
-    }
-    if (item.dataset.housingPrice !== filters.housingPrice) {
-      return false;
-    }
-    if (item.dataset.housingGuests !== filters.housingGuests) {
-      return false;
-    }
-    if (item.dataset.housingRooms !== filters.housingRooms) {
-      return false;
-    }
-    for (var i = 0; i < filters.housingFeatures.length; i++) {
-      if (item.dataset.housingFeatures.indexOf(filters.housingFeatures[i]) === -1) {
+    if (typeof item.dataset.housingType !== 'undefined') {
+      if ((item.dataset.housingType !== filters.housingType) && (filters.housingType !== 'any')) {
         return false;
+      }
+      if ((item.dataset.housingPrice !== filters.housingPrice) && (filters.housingPrice !== 'any')) {
+        return false;
+      }
+      if ((item.dataset.housingGuests !== filters.housingGuests) && (filters.housingGuests !== 'any')) {
+        return false;
+      }
+      if ((item.dataset.housingRooms !== filters.housingRooms) && (filters.housingRooms !== 'any')) {
+        return false;
+      }
+      for (var i = 0; i < filters.housingFeatures.length; i++) {
+        if (item.dataset.housingFeatures.indexOf(filters.housingFeatures[i]) === -1) {
+          return false;
+        }
       }
     }
     return true;
   }
 
-  function filterElements(elemClass) {
+  window.filterElements = function (elemClass) {
     var filterElems = document.querySelectorAll(elemClass);
     var filters = getFilters();
 
-    for (var i = 0; i < filterElems.length; i++) {
-      if (filterItem(filterElems[i], filters)) {
-        filterElems[i].classList.remove('hidden');
-      } else {
-        filterElems[i].classList.add('hidden');
+    window.debounce(function () {
+      for (var i = 0; i < filterElems.length; i++) {
+        if (filterItem(filterElems[i], filters)) {
+          filterElems[i].classList.remove('hidden');
+        } else {
+          filterElems[i].classList.add('hidden');
+        }
       }
-    }
-  }
-
+    });
+  };
 })();

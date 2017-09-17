@@ -51,10 +51,22 @@
       });
 
       pin.dataset.housingType = ad.offer.type;
-      pin.dataset.housingPrice = ad.offer.price;
+
+      if (ad.offer.price < 10000) {
+        pin.dataset.housingPrice = 'low';
+      } else if (ad.offer.price > 50000) {
+        pin.dataset.housingPrice = 'high';
+      } else {
+        pin.dataset.housingPrice = 'middle';
+      }
+
       pin.dataset.housingRooms = ad.offer.rooms;
+
       pin.dataset.housingGuests = ad.offer.guests;
+
       pin.dataset.housingFeatures = ad.offer.features.join(' ');
+
+      pin.classList.add('hidden');
 
       return pin;
     },
@@ -66,6 +78,7 @@
       }
 
       block.appendChild(fragment);
+      window.filterElements('.pin');
     },
   };
 })();
