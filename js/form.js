@@ -2,6 +2,9 @@
 
 (function () {
   var HOUSES_PRICES = [0, 1000, 5000, 10000];
+  var HOUSES_TYPES = ['bungalo', 'flat', 'house', 'palace'];
+  var ROOMS = ['1', '2', '3', '100'];
+  var CAPACITY = ['1', '2', '3', '0'];
 
   var noticeForm = document.querySelector('.notice__form');
   var advertTitleInput = noticeForm.querySelector('#title');
@@ -56,34 +59,22 @@
   });
 
   function setRoomNumber(field1, field2) {
-    switch (field1.value) {
-      case ('0') :
-        field2.value = '100';
-        break;
-      case ('1') :
-        field2.value = '1';
-        break;
-      case ('2') :
-        field2.value = '2';
-        break;
-      case ('3') :
-        field2.value = '3';
-        break;
-    }
+    var index = (CAPACITY.indexOf(field1.value) > -1) ? CAPACITY.indexOf(field1.value) : 0;
+    field2.value = ROOMS[index];
   }
 
   function setCapacity(field1, field2) {
-    if (field1.value === '100') {
-      field2.value = '0';
+    if (field1.value === ROOMS[0]) {
+      field2.value = CAPACITY[0];
     }
-    if (field1.value === '1') {
-      field2.value = '1';
+    if ((field1.value === ROOMS[1]) && (+field2.value > +field1.value)) {
+      field2.value = CAPACITY[1];
     }
-    if ((field1.value === '2') && (+field2.value > +field1.value)) {
-      field2.value = '2';
+    if ((field1.value === ROOMS[2]) && (+field2.value > +field1.value)) {
+      field2.value = CAPACITY[2];
     }
-    if ((field1.value === '3') && (+field2.value > +field1.value)) {
-      field2.value = '3';
+    if (field1.value === ROOMS[3]) {
+      field2.value = CAPACITY[3];
     }
   }
 
@@ -93,31 +84,19 @@
 
   function setHouse(field1, field2) {
     if (field1.value >= HOUSES_PRICES[3]) {
-      field2.value = 'palace';
+      field2.value = HOUSES_TYPES[3];
     } else if (field1.value >= HOUSES_PRICES[2]) {
-      field2.value = 'house';
+      field2.value = HOUSES_TYPES[2];
     } else if (field1.value >= HOUSES_PRICES[1]) {
-      field2.value = 'flat';
+      field2.value = HOUSES_TYPES[1];
     } else if (field1.value >= HOUSES_PRICES[0]) {
-      field2.value = 'bungalo';
+      field2.value = HOUSES_TYPES[0];
     }
   }
 
   function setPrice(field1, field2) {
-    switch (field1.value) {
-      case 'bungalo':
-        field2.value = HOUSES_PRICES[0];
-        break;
-      case 'flat':
-        field2.value = HOUSES_PRICES[1];
-        break;
-      case 'house':
-        field2.value = HOUSES_PRICES[2];
-        break;
-      case 'palace':
-        field2.value = HOUSES_PRICES[3];
-        break;
-    }
+    var index = (HOUSES_TYPES.indexOf(field1.value) > -1) ? HOUSES_TYPES.indexOf(field1.value) : 0;
+    field2.value = HOUSES_PRICES[index];
   }
 
   advertAddressInput.addEventListener('invalid', function () {
