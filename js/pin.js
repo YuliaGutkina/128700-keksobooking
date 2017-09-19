@@ -1,8 +1,11 @@
 'use strict';
 
 (function () {
-  var pinWidth = 56;
-  var pinHeight = 75;
+  var PIN_WIDTH = 56;
+  var PIN_HEIGHT = 75;
+  var PIN_IMG_SIZE = 40;
+  var LOW_PRICE = 10000;
+  var HIGH_PRICE = 50000;
 
   var util = window.util;
   var showCard = window.showCard;
@@ -11,8 +14,8 @@
     var img = document.createElement('img');
     img.src = src;
     img.className = 'rounded';
-    img.setAttribute('width', 40);
-    img.setAttribute('height', 40);
+    img.setAttribute('width', PIN_IMG_SIZE);
+    img.setAttribute('height', PIN_IMG_SIZE);
     img.setAttribute('tabindex', 0);
 
     return img;
@@ -29,56 +32,68 @@
       window.pin.checkActivePins(map);
       pin.classList.add('pin--active');
     },
-    generatePin: function (ad) {
+    generatePin: function (advert) {
       var pin = document.createElement('div');
-      var pinX = ad.location.x - pinWidth / 2;
-      var pinY = ad.location.y - pinHeight;
+      var pinX = advert.location.x - PIN_WIDTH / 2;
+      var pinY = advert.location.y - PIN_HEIGHT;
 
       pin.className = 'pin';
       pin.style = 'left: ' + pinX + 'px; ' + 'top: ' + pinY + 'px;';
-      pin.appendChild(getPinImg(ad.author.avatar));
+      pin.appendChild(getPinImg(advert.author.avatar));
 
       pin.addEventListener('click', function () {
-        showCard(ad);
+        showCard(advert);
       });
 
       pin.addEventListener('keydown', function (evt) {
         util.isEnterEvent(evt, function () {
           if (evt.target === document.activeElement) {
-            showCard(ad);
+            showCard(advert);
           }
         });
       });
 
-      pin.dataset.housingType = ad.offer.type;
+      pin.dataset.housingType = advert.offer.type;
 
-      if (ad.offer.price < 10000) {
+      if (advert.offer.price < LOW_PRICE) {
         pin.dataset.housingPrice = 'low';
-      } else if (ad.offer.price > 50000) {
+      } else if (advert.offer.price > HIGH_PRICE) {
         pin.dataset.housingPrice = 'high';
       } else {
         pin.dataset.housingPrice = 'middle';
       }
 
-      pin.dataset.housingRooms = ad.offer.rooms;
+      pin.dataset.housingRooms = advert.offer.rooms;
 
-      pin.dataset.housingGuests = ad.offer.guests;
+      pin.dataset.housingGuests = advert.offer.guests;
 
-      pin.dataset.housingFeatures = ad.offer.features.join(' ');
+      pin.dataset.housingFeatures = advert.offer.features.join(' ');
 
       pin.classList.add('hidden');
 
       return pin;
     },
-    showPins: function (block, ads) {
+    createPins: function (block, adverts) {
       var fragment = document.createDocumentFragment();
 
-      for (var j = 0; j < ads.length; j++) {
-        fragment.appendChild(window.pin.generatePin(ads[j]));
+      for (var j = 0; j < adverts.length; j++) {
+        fragment.appendChild(window.pin.generatePin(adverts[j]));
       }
 
       block.appendChild(fragment);
-      window.filterElements('.pin');
     },
+    showPins: function (block, number) {
+      var pins = block.querySelectorAll('.pin');
+      var pinsArray = [];
+      var pinsToShow = [];
+
+      for (var j = 0; j < pins.length; j++) {
+        pinsArray.push(pins[j]);
+      }
+      for (var i = 0; i < number; i++) {
+        pinsToShow[i] = util.ejectRandomElement(pinsArray);
+        pinsToShow[i].classList.remove('hidden');
+      }
+    }
   };
 })();

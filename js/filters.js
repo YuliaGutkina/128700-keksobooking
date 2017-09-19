@@ -8,6 +8,8 @@
   var housingGuests = formFilters.querySelector('#housing_guests-number');
   var housingFeatures = formFilters.querySelector('#housing_features');
 
+  var dialog = window.dialog;
+
   formFilters.addEventListener('change', function () {
     window.filterElements('.pin');
   });
@@ -46,11 +48,9 @@
       if ((item.dataset.housingRooms !== filters.housingRooms) && (filters.housingRooms !== 'any')) {
         return false;
       }
-      for (var i = 0; i < filters.housingFeatures.length; i++) {
-        if (item.dataset.housingFeatures.indexOf(filters.housingFeatures[i]) === -1) {
-          return false;
-        }
-      }
+      return filters.housingFeatures.every(function (feature) {
+        return item.dataset.housingFeatures.indexOf(feature) !== -1;
+      });
     }
     return true;
   }
@@ -65,6 +65,10 @@
           filterElems[i].classList.remove('hidden');
         } else {
           filterElems[i].classList.add('hidden');
+          if (filterElems[i].classList.contains('pin--active')) {
+            filterElems[i].classList.remove('pin--active');
+            dialog.closeDialog();
+          }
         }
       }
     });

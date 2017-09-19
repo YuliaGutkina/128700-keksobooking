@@ -1,15 +1,17 @@
 'use strict';
 
 (function () {
+  var HOUSES_PRICES = [0, 1000, 5000, 10000];
+
   var noticeForm = document.querySelector('.notice__form');
-  var adTitleInput = noticeForm.querySelector('#title');
-  var adPriceInput = noticeForm.querySelector('#price');
-  var adTimeIn = noticeForm.querySelector('#timein');
-  var adTimeOut = noticeForm.querySelector('#timeout');
-  var adType = noticeForm.querySelector('#type');
-  var adCapacity = noticeForm.querySelector('#capacity');
-  var adRoomNumber = noticeForm.querySelector('#room_number');
-  var adAddressInput = noticeForm.querySelector('#address');
+  var advertTitleInput = noticeForm.querySelector('#title');
+  var advertPriceInput = noticeForm.querySelector('#price');
+  var advertTimeIn = noticeForm.querySelector('#timein');
+  var advertTimeOut = noticeForm.querySelector('#timeout');
+  var advertType = noticeForm.querySelector('#type');
+  var advertCapacity = noticeForm.querySelector('#capacity');
+  var advertRoomNumber = noticeForm.querySelector('#room_number');
+  var advertAddressInput = noticeForm.querySelector('#address');
 
   var backend = window.backend;
 
@@ -29,28 +31,28 @@
   });
 
 
-  adCapacity.addEventListener('input', function () {
-    window.synchronizeFields(adCapacity, adRoomNumber, setRoomNumber);
+  advertCapacity.addEventListener('input', function () {
+    window.synchronizeFields(advertCapacity, advertRoomNumber, setRoomNumber);
   });
 
-  adRoomNumber.addEventListener('input', function () {
-    window.synchronizeFields(adRoomNumber, adCapacity, setCapacity);
+  advertRoomNumber.addEventListener('input', function () {
+    window.synchronizeFields(advertRoomNumber, advertCapacity, setCapacity);
   });
 
-  adTimeIn.addEventListener('input', function () {
-    window.synchronizeFields(adTimeIn, adTimeOut, syncValues);
+  advertTimeIn.addEventListener('input', function () {
+    window.synchronizeFields(advertTimeIn, advertTimeOut, syncValues);
   });
 
-  adTimeOut.addEventListener('input', function () {
-    window.synchronizeFields(adTimeOut, adTimeIn, syncValues);
+  advertTimeOut.addEventListener('input', function () {
+    window.synchronizeFields(advertTimeOut, advertTimeIn, syncValues);
   });
 
-  adPriceInput.addEventListener('input', function () {
-    window.synchronizeFields(adPriceInput, adType, setHouse);
+  advertPriceInput.addEventListener('input', function () {
+    window.synchronizeFields(advertPriceInput, advertType, setHouse);
   });
 
-  adType.addEventListener('input', function () {
-    window.synchronizeFields(adType, adPriceInput, setPrice);
+  advertType.addEventListener('input', function () {
+    window.synchronizeFields(advertType, advertPriceInput, setPrice);
   });
 
   function setRoomNumber(field1, field2) {
@@ -90,13 +92,13 @@
   }
 
   function setHouse(field1, field2) {
-    if (field1.value >= 10000) {
+    if (field1.value >= HOUSES_PRICES[3]) {
       field2.value = 'palace';
-    } else if (field1.value >= 5000) {
+    } else if (field1.value >= HOUSES_PRICES[2]) {
       field2.value = 'house';
-    } else if (field1.value >= 1000) {
+    } else if (field1.value >= HOUSES_PRICES[1]) {
       field2.value = 'flat';
-    } else if (field1.value >= 0) {
+    } else if (field1.value >= HOUSES_PRICES[0]) {
       field2.value = 'bungalo';
     }
   }
@@ -104,79 +106,79 @@
   function setPrice(field1, field2) {
     switch (field1.value) {
       case 'bungalo':
-        field2.value = 0;
+        field2.value = HOUSES_PRICES[0];
         break;
       case 'flat':
-        field2.value = 1000;
+        field2.value = HOUSES_PRICES[1];
         break;
       case 'house':
-        field2.value = 5000;
+        field2.value = HOUSES_PRICES[2];
         break;
       case 'palace':
-        field2.value = 10000;
+        field2.value = HOUSES_PRICES[3];
         break;
     }
   }
 
-  adAddressInput.addEventListener('invalid', function () {
-    if (!adAddressInput.validity.valid) {
-      if (adAddressInput.validity.valueMissing) {
-        adAddressInput.setCustomValidity('Обязательное поле');
+  advertAddressInput.addEventListener('invalid', function () {
+    if (!advertAddressInput.validity.valid) {
+      if (advertAddressInput.validity.valueMissing) {
+        advertAddressInput.setCustomValidity('Обязательное поле');
       }
     } else {
-      adAddressInput.setCustomValidity('');
+      advertAddressInput.setCustomValidity('');
     }
   });
 
-  adAddressInput.addEventListener('input', function (evt) {
+  advertAddressInput.addEventListener('input', function (evt) {
     var target = evt.target;
     target.setCustomValidity('');
   });
 
-  adTitleInput.addEventListener('invalid', function () {
-    if (!adTitleInput.validity.valid) {
-      if (adTitleInput.validity.tooShort) {
-        adTitleInput.setCustomValidity('Заголовок должен содержать не меньше 30 символов');
-      } else if (adTitleInput.validity.tooLong) {
-        adTitleInput.setCustomValidity('Заголовок не должен превышать 100 символов');
-      } else if (adTitleInput.validity.valueMissing) {
-        adTitleInput.setCustomValidity('Обязательное поле');
+  advertTitleInput.addEventListener('invalid', function () {
+    if (!advertTitleInput.validity.valid) {
+      if (advertTitleInput.validity.tooShort) {
+        advertTitleInput.setCustomValidity('Заголовок должен содержать не меньше 30 символов');
+      } else if (advertTitleInput.validity.tooLong) {
+        advertTitleInput.setCustomValidity('Заголовок не должен превышать 100 символов');
+      } else if (advertTitleInput.validity.valueMissing) {
+        advertTitleInput.setCustomValidity('Обязательное поле');
       }
     } else {
-      adTitleInput.setCustomValidity('');
+      advertTitleInput.setCustomValidity('');
     }
   });
 
-  adTitleInput.addEventListener('input', function (evt) {
+  advertTitleInput.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value.length < adTitleInput.minlength) {
+    if (target.value.length < advertTitleInput.minlength) {
       target.setCustomValidity('Заголовок должен содержать не меньше 30 символов');
-    } else if (target.value.length > adTitleInput.maxlength) {
+    } else if (target.value.length > advertTitleInput.maxlength) {
       target.setCustomValidity('Заголовок не должен превышать 100 символов');
     } else {
       target.setCustomValidity('');
     }
   });
 
-  adPriceInput.addEventListener('invalid', function () {
-    if (!adPriceInput.validity.valid) {
-      if (adPriceInput.validity.rangeUnderflow) {
-        adPriceInput.setCustomValidity('Цена на может меньше нуля');
-      } else if (adPriceInput.validity.rangeOverflow) {
-        adPriceInput.setCustomValidity('Цена на может быть больше 1000000');
-      } else if (adPriceInput.validity.valueMissing) {
-        adPriceInput.setCustomValidity('Обязательное поле');
+  advertPriceInput.addEventListener('invalid', function () {
+    if (!advertPriceInput.validity.valid) {
+      if (advertPriceInput.validity.rangeUnderflow) {
+        advertPriceInput.setCustomValidity('Цена на может меньше нуля');
+      } else if (advertPriceInput.validity.rangeOverflow) {
+        advertPriceInput.setCustomValidity('Цена на может быть больше 1000000');
+      } else if (advertPriceInput.validity.valueMissing) {
+        advertPriceInput.setCustomValidity('Обязательное поле');
       }
     } else {
-      adPriceInput.setCustomValidity('');
+      advertPriceInput.setCustomValidity('');
     }
   });
 
-  adPriceInput.addEventListener('input', function (evt) {
+  advertPriceInput.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value.length > adPriceInput.max) {
+    if (target.value.length > advertPriceInput.max) {
       target.setCustomValidity('Цена на может быть больше 1000000');
-    } else if (target.value.length < adPriceInput.min) {
+    } else if (target.value.length < advertPriceInput.min) {
       target.setCustomValidity('Цена на может меньше нуля');
     } else {
       target.setCustomValidity('');

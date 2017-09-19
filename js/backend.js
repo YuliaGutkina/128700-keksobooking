@@ -1,9 +1,10 @@
 'use strict';
 
 (function () {
+  var TIMEOUT = 10000;
+
   var loadUrl = 'https://1510.dump.academy/keksobooking/data';
   var saveUrl = 'https://1510.dump.academy/keksobooking';
-  var errors = [];
 
   window.backend = {
     load: function (onLoad, onError) {
@@ -24,10 +25,8 @@
       });
 
       xhr.addEventListener('timeout', function () {
-        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+        onError('Запрос не успел выполниться за ' + TIMEOUT + 'мс');
       });
-
-      xhr.timeout = 10000; // 10s
 
       xhr.open('GET', loadUrl);
       xhr.send();
@@ -50,22 +49,22 @@
       });
 
       xhr.addEventListener('timeout', function () {
-        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+        onError('Запрос не успел выполниться за ' + TIMEOUT + 'мс');
       });
-
-      xhr.timeout = 10000; // 10s
 
       xhr.open('POST', saveUrl);
       xhr.send(data);
     },
     showErrorMsg: function (message) {
-      var block = document.createElement('div');
-      block.style = 'position: fixed; top: 50px; right: 50px; padding: 20px; background-color: white; border-radius: 2px; transform: ease-out 1s;z-index: 10';
-      errors.push(message);
-      for (var i = 0; i < errors.length; i++) {
-        block.innerHTML = '<p>' + errors[i] + '</p>';
+      if (!errorBlock) {
+        var errorBlock = document.createElement('div');
+        errorBlock.style = 'position: fixed; top: 50px; right: 50px; padding: 20px; background-color: white; border-radius: 2px; transform: ease-out 1s;z-index: 10';
+        document.body.appendChild(errorBlock);
       }
-      document.body.appendChild(block);
+
+      var newMessage = document.createElement('p');
+      newMessage.textContent = message;
+      errorBlock.appendChild(newMessage);
     }
   };
 })();
