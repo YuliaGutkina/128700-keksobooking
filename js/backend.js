@@ -60,11 +60,16 @@
         var errorBlock = document.createElement('div');
         errorBlock.style = 'position: fixed; top: 50px; right: 50px; padding: 20px; background-color: white; border-radius: 2px; transform: ease-out 1s;z-index: 10';
         document.body.appendChild(errorBlock);
+        errorBlock.classList.remove('hidden');
       }
 
       var newMessage = document.createElement('p');
       newMessage.textContent = message;
       errorBlock.appendChild(newMessage);
+
+      setTimeout(function () {
+        errorBlock.classList.add('hidden');
+      }, 10000);
     }
   };
 })();

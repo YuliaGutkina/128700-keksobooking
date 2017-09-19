@@ -40,7 +40,7 @@
 
   function launchMapAction(target) {
     while (target !== mapWrapper) {
-      if (target.classList.contains('pin')) {
+      if (target.classList.contains('pin') && (!target.classList.contains('pin__main'))) {
         pin.activatePin(pinMap, target);
         dialog.openDialog();
         return;

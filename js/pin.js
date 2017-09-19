@@ -88,7 +88,9 @@
       var pinsToShow = [];
 
       for (var j = 0; j < pins.length; j++) {
-        pinsArray.push(pins[j]);
+        if (!pins[j].classList.contains('pin__main')) {
+          pinsArray.push(pins[j]);
+        }
       }
       for (var i = 0; i < number; i++) {
         pinsToShow[i] = util.ejectRandomElement(pinsArray);
