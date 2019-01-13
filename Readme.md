@@ -1,4 +1,4 @@
-Project «Keksobooking» [![Build status][travis-image]][travis-url]
+# Project «Keksobooking» [![Build status][travis-image]][travis-url]
 
 * Student: [Yulia Gutkina](https://up.htmlacademy.ru/javascript/10/user/128700).
 * Tutor: [Evgeniy Karpov](https://htmlacademy.ru/profile/id70583).
