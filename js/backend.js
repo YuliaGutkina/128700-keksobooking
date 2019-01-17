@@ -3,8 +3,8 @@
 (function () {
   var TIMEOUT = 10000;
 
-  var loadUrl = 'https://1510.dump.academy/keksobooking/data';
-  var saveUrl = 'https://1510.dump.academy/keksobooking';
+  var loadUrl = 'https://js.dump.academy/keksobooking/data';
+  var saveUrl = 'https://js.dump.academy/keksobooking';
 
   window.backend = {
     load: function (onLoad, onError) {
